@@ -6,16 +6,14 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state={
-      title: 'React Simple CRUD Application',
+      title: 'React Simple Contact Application',
       act: 0,
       index: '',
       datas: []
     }
   } 
 
-  componentDidMount(){
-    this.refs.name.focus();
-  }
+  
 
   fSubmit = (e) =>{
     e.preventDefault();
@@ -23,17 +21,17 @@ class App extends Component {
     console.log('check');
 
     let datas = this.state.datas;
-    let name = this.refs.name.value;
+    let number = this.refs.number.value;
     let address = this.refs.address.value;
 
     if(this.state.act === 0){   //new
       let data = {
-        name, address
+        number, address
       }
       datas.push(data);
     }else{                      //update
       let index = this.state.index;
-      datas[index].name = name;
+      datas[index].number = number;
       datas[index].address = address;
     }    
 
@@ -43,9 +41,30 @@ class App extends Component {
     });
 
     this.refs.myForm.reset();
-    this.refs.name.focus();
+    this.refs.number.focus();
   }
+  functionRemove = (i) => {
+    let datas = this.state.datas;
+    datas.splice(i,1);
+    this.setState({
+      datas: datas
+    });
 
+    this.refs.myForm.reset();
+    this.refs.number.focus();
+  }
+  functionEdit = (i) => {
+    let data = this.state.datas[i];
+    this.refs.number.value = data.number;
+    this.refs.address.value = data.address;
+
+    this.setState({
+      act: 1,
+      index: i
+    });
+
+    this.refs.number.focus();
+  } 
   
 
   render() {
