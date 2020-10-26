@@ -6,32 +6,31 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state={
-      title: 'React Simple Contact Application',
+      title: 'Contact Application',
       act: 0,
       index: '',
       datas: []
     }
   } 
 
-  
+ 
 
-  fSubmit = (e) =>{
+  functionSubmit = (e) =>{
     e.preventDefault();
-    
-    console.log('check');
+    console.log('see console');
 
     let datas = this.state.datas;
-    let number = this.refs.number.value;
+    let name = this.refs.name.value;
     let address = this.refs.address.value;
 
     if(this.state.act === 0){   //new
       let data = {
-        number, address
+        name, address
       }
       datas.push(data);
     }else{                      //update
       let index = this.state.index;
-      datas[index].number = number;
+      datas[index].name = name;
       datas[index].address = address;
     }    
 
@@ -41,8 +40,9 @@ class App extends Component {
     });
 
     this.refs.myForm.reset();
-    this.refs.number.focus();
+    this.refs.name.focus();
   }
+
   functionRemove = (i) => {
     let datas = this.state.datas;
     datas.splice(i,1);
@@ -51,11 +51,12 @@ class App extends Component {
     });
 
     this.refs.myForm.reset();
-    this.refs.number.focus();
+    this.refs.name.focus();
   }
+
   functionEdit = (i) => {
     let data = this.state.datas[i];
-    this.refs.number.value = data.number;
+    this.refs.name.value = data.name;
     this.refs.address.value = data.address;
 
     this.setState({
@@ -63,9 +64,8 @@ class App extends Component {
       index: i
     });
 
-    this.refs.number.focus();
-  } 
-  
+    this.refs.name.focus();
+  }  
 
   render() {
     let datas = this.state.datas;
@@ -73,12 +73,18 @@ class App extends Component {
       <div className="App">
         <h2>{this.state.title}</h2>
         <form ref="myForm" className="myForm">
-          <input type="text" ref="name" placeholder="Phone number" className="formField" />
+          <input type="text" ref="name" placeholder="your number" className="formField" />
           <input type="text" ref="address" placeholder="your address" className="formField" />
-          <button onClick={(e)=>this.fSubmit(e)} className="myButton">submit </button>
+          <button onClick={(e)=>this.functionSubmit(e)} className="myButton">submit </button>
         </form>
         <pre>
-         
+          {datas.map((data, i) =>
+            <li key={i} className="myList">
+              {i+1}. {data.name}, {data.address}
+              <button onClick={()=>this.functionRemove(i)} className="myListButton">remove </button>
+              <button onClick={()=>this.functionEdit(i)} className="myListButton">edit </button>
+            </li>
+          )}
         </pre>
       </div>
     );
